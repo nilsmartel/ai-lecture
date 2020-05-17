@@ -13,6 +13,10 @@ def backtrack(variables, domain, constraints, setup={}):
         setup[var] = d
         # all constraints are satisfied
         if all([c(setup) for c in constraints]):
+            # Solution found
+            if len(variables) == 0:
+                return setup
+
             result = backtrack(variables, domain, constraints, setup)
             # No solutions found on this way
             if result is None:
@@ -28,6 +32,7 @@ def example():
     domain = [1, 2, 3]
     # Only returns true, if all keys
     # can be found inside the dict
+
     def req(d, keys):
         m = [key in d for key in keys]
         return all(m)
@@ -37,6 +42,7 @@ def example():
         lambda d: req(d, ['a', 'c']) and d['a'] != d['c'],
     ]
     backtrack(variables, domain, constraints)
+
 
 result = example()
 
