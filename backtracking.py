@@ -2,16 +2,10 @@
 
 
 def backtrack(variables, domain, constraints, setup={}):
-    # Solution found
-    if len(variables) == 0:
-        return setup
-
     # create clones so we won't mutate call arguments
     setup = dict(setup)
-    # Chose a variable and remove it from the remaing variables
+    # Chose a variable
     var = variables[0]
-    variables = variables[1:]
-
 
     # set variable chosen at this step to all possilbe values
     # in domain
@@ -19,8 +13,11 @@ def backtrack(variables, domain, constraints, setup={}):
         setup[var] = d
         # all constraints are satisfied
         if all([c(setup) for c in constraints]):
+            # Solution found
+            if len(variables) == 1:
+                return setup
 
-            result = backtrack(variables, domain, constraints, setup)
+            result = backtrack(variables[1:], domain, constraints, setup)
             # No solutions found on this way
             if result is None:
                 continue
